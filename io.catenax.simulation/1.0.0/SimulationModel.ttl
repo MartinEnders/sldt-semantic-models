@@ -1,64 +1,72 @@
 #######################################################################
-# Simulation Model Exchange - Version 1.3.0 (AME-safe)
-# Adds: G2) Extended MIC-Core metadata placeholder, H4) Minimal Binary Extension
+# Simulation Model Exchange - Version 1.4.1
+# Fix: Restored missing PDM Property definitions (metadata, versionInfo, etc.)
 # SPDX-License-Identifier: CC-BY-4.0
 #######################################################################
-#######################################################################
-# ASPECT
-#######################################################################
-#######################################################################
-# ROOT PROPERTIES
-#######################################################################
-#######################################################################
-# CHARACTERISTICS
-#######################################################################
-#######################################################################
-# ENTITIES
-#######################################################################
-#######################################################################
-# DETAILED PROPERTIES
-#######################################################################
-# Information Entity properties
-# Binary Entity properties (minimal extension)
-# Requirement Entity properties
-# Metadata Entry Entity properties
-# MIC-Core placeholder properties (extended)
-#######################################################################
-# ENUMERATIONS & TRAITS (from earlier versions)
-#######################################################################
-
-
 
 @prefix samm: <urn:samm:org.eclipse.esmf.samm:meta-model:2.1.0#> .
 @prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.1.0#> .
-@prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.1.0#> .
-@prefix unit: <urn:samm:org.eclipse.esmf.samm:unit:2.1.0#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix : <urn:samm:io.catenax.simulation_model.minimal:1.3.0#> .
+@prefix : <urn:samm:io.catenax.simulation_model.minimal:1.4.0#> .
 
 :SimulationModel a samm:Aspect ;
    samm:preferredName "Simulation Model"@en ;
-   samm:description "Simulation model aspect including enumerations, versioning, optional fields, metadata list, multiple requirements, part references, MIC-Core placeholder, and minimal binary extension."@en ;
-   samm:properties ( :simulationModelId :simulationModelInformation :simulationModelBinary :requirementReferences :micMetadata ) ;
+   samm:description "Simulation model aspect regrouped by ProSTEP Smart SE categories."@en ;
+   samm:version "1.4.0" ;
+   samm:properties ( :simulationModelId
+                     :pdmInformation
+                     :modelInformation
+                     :analysisSettings
+                     :hardwareInformation
+                     :results
+                     :modelProperties
+                     :simulationModelBinary
+                     :requirementReferences ) ;
    samm:operations ( ) ;
    samm:events ( ) .
 
+#######################################################################
+# ROOT PROPERTIES
+#######################################################################
+
 :simulationModelId a samm:Property ;
    samm:preferredName "Simulation Model ID"@en ;
-   samm:description "Identifier of this simulation model instance (free text)."@en ;
+   samm:description "Unique identifier of this simulation model instance."@en ;
    samm:characteristic samm-c:Text ;
    samm:exampleValue "SIM-0001-THERMAL" .
 
-:simulationModelInformation a samm:Property ;
-   samm:preferredName "Simulation Model Information"@en ;
-   samm:description "General information about the simulation model."@en ;
-   samm:characteristic :SimulationModelInformationCharacteristic .
+:pdmInformation a samm:Property ;
+   samm:preferredName "PDM Information"@en ;
+   samm:description "Metadata, BOM structure, change info, version info, and configuration."@en ;
+   samm:characteristic :PdmInformationCharacteristic .
+
+:modelInformation a samm:Property ;
+   samm:preferredName "Model Information"@en ;
+   samm:description "Topology, Control, E/E, Software, Mechanics, Functions."@en ;
+   samm:characteristic :ModelInformationCharacteristic .
+
+:analysisSettings a samm:Property ;
+   samm:preferredName "Analysis Settings"@en ;
+   samm:description "Requirement links, Solver/General settings, Load/Boundary/Start conditions."@en ;
+   samm:characteristic :AnalysisSettingsCharacteristic .
+
+:hardwareInformation a samm:Property ;
+   samm:preferredName "Hardware Information"@en ;
+   samm:description "ECU and HIL description."@en ;
+   samm:characteristic :HardwareInformationCharacteristic .
+
+:results a samm:Property ;
+   samm:preferredName "Results"@en ;
+   samm:description "Key results, reports, and post processing."@en ;
+   samm:characteristic :ResultsCharacteristic .
+
+:modelProperties a samm:Property ;
+   samm:preferredName "Properties"@en ;
+   samm:description "General properties, Parameters, State variables, Characteristic diagrams."@en ;
+   samm:characteristic :ModelPropertiesCharacteristic .
 
 :simulationModelBinary a samm:Property ;
    samm:preferredName "Simulation Model Binary"@en ;
-   samm:description "Reference to the binary representation with minimal extended metadata (size and checksum)."@en ;
+   samm:description "Reference to the binary representation with minimal extended metadata."@en ;
    samm:characteristic :BinaryModelCharacteristic .
 
 :requirementReferences a samm:Property ;
@@ -66,14 +74,33 @@
    samm:description "Set of local requirement references."@en ;
    samm:characteristic :RequirementReferenceSet .
 
-:micMetadata a samm:Property ;
-   samm:preferredName "MIC-Core Metadata"@en ;
-   samm:description "Local placeholder entity mirroring MIC-Core metadata structure. Replace dataType with official MIC-Core entity later."@en ;
-   samm:characteristic :MicMetadataCharacteristic .
+#######################################################################
+# CHARACTERISTICS
+#######################################################################
 
-:SimulationModelInformationCharacteristic a samm:Characteristic ;
-   samm:preferredName "Simulation Model Information Characteristic"@en ;
-   samm:dataType :SimulationModelInformationEntity .
+:PdmInformationCharacteristic a samm:Characteristic ;
+   samm:preferredName "PDM Information Characteristic"@en ;
+   samm:dataType :PdmInformationEntity .
+
+:ModelInformationCharacteristic a samm:Characteristic ;
+   samm:preferredName "Model Information Characteristic"@en ;
+   samm:dataType :ModelInformationEntity .
+
+:AnalysisSettingsCharacteristic a samm:Characteristic ;
+   samm:preferredName "Analysis Settings Characteristic"@en ;
+   samm:dataType :AnalysisSettingsEntity .
+
+:HardwareInformationCharacteristic a samm:Characteristic ;
+   samm:preferredName "Hardware Information Characteristic"@en ;
+   samm:dataType :HardwareInformationEntity .
+
+:ResultsCharacteristic a samm:Characteristic ;
+   samm:preferredName "Results Characteristic"@en ;
+   samm:dataType :ResultsEntity .
+
+:ModelPropertiesCharacteristic a samm:Characteristic ;
+   samm:preferredName "Model Properties Characteristic"@en ;
+   samm:dataType :ModelPropertiesEntity .
 
 :BinaryModelCharacteristic a samm:Characteristic ;
    samm:preferredName "Binary Model Characteristic"@en ;
@@ -83,31 +110,142 @@
    samm:preferredName "Requirement Reference Set"@en ;
    samm:dataType :RequirementReferenceEntity .
 
-:MicMetadataCharacteristic a samm:Characteristic ;
-   samm:preferredName "MIC Metadata Characteristic"@en ;
-   samm:description "Characteristic for local MIC-Core placeholder entity."@en ;
-   samm:dataType :MicCoreMetadataEntity .
+#######################################################################
+# ENTITIES (Level 1)
+#######################################################################
 
-:SimulationModelInformationEntity a samm:Entity ;
-   samm:preferredName "Simulation Model Information Entity"@en ;
-   samm:description "General info, enumerations, version, optional provider info, and part linkage."@en ;
-   samm:properties ( :modelName :modelPurpose :simulationType :physicalDomain :modelVersion [ samm:property :author; samm:optional true ] [ samm:property :creationTimestamp; samm:optional true ] [ samm:property :description; samm:optional true ] [ samm:property :providerName; samm:optional true ] [ samm:property :metadataTimestamp; samm:optional true ] [ samm:property :relatedPartNumber; samm:optional true ] [ samm:property :relatedPartId; samm:optional true ] ) .
+:PdmInformationEntity a samm:Entity ;
+   samm:preferredName "PDM Information"@en ;
+   samm:properties ( :metadata :bomStructure :changeInfo :versionInfo :configuration ) .
+
+:ModelInformationEntity a samm:Entity ;
+   samm:preferredName "Model Information"@en ;
+   samm:properties ( :topologyDescription :controlDescription :eeDescription :softwareDescription :mechanicsDescription :functionsDescription ) .
+
+:AnalysisSettingsEntity a samm:Entity ;
+   samm:preferredName "Analysis Settings"@en ;
+   samm:properties ( :analysisRequirementLinks :solverSettingsText :generalSettingsText :loadCasesText :startConditionsText :boundaryConditionsText :testCasesText ) .
+
+:HardwareInformationEntity a samm:Entity ;
+   samm:preferredName "Hardware Information"@en ;
+   samm:properties ( :ecuDescription :hilDescription ) .
+
+:ResultsEntity a samm:Entity ;
+   samm:preferredName "Results"@en ;
+   samm:properties ( :keyResultsText :reportsText :postProcessingText ) .
+
+:ModelPropertiesEntity a samm:Entity ;
+   samm:preferredName "Model Properties"@en ;
+   samm:properties ( :generalPropertiesText :parametersText :stateVariablesText :characteristicDiagramsText ) .
 
 :BinaryModelEntity a samm:Entity ;
    samm:preferredName "Binary Model Entity"@en ;
-   samm:description "Reference to the simulation binary with minimal extended metadata."@en ;
-   samm:properties ( :fileUri :fileType [ samm:property :binarySize; samm:optional true ] [ samm:property :checksumSha256; samm:optional true ] ) .
+   samm:properties ( :fileUri :fileType
+                     [ samm:property :binarySize; samm:optional true ]
+                     [ samm:property :checksumSha256; samm:optional true ] ) .
 
 :RequirementReferenceEntity a samm:Entity ;
    samm:preferredName "Requirement Reference Entity"@en ;
-   samm:description "Entity for a local requirement reference."@en ;
    samm:properties ( :requirementId :requirementTitle ) .
 
-:MicCoreMetadataEntity a samm:Entity ;
-   samm:preferredName "MIC-Core Metadata Entity (Local Placeholder)"@en ;
-   samm:description "Extended placeholder for MIC-Core metadata; later replace with official MIC-Core entity/prefix."@en ;
-   samm:properties ( :micIdentifier :micName :micVersion :micLifecycleState :micOwner [ samm:property :micCreatedAt; samm:optional true ] [ samm:property :micUpdatedAt; samm:optional true ] [ samm:property :micDescription; samm:optional true ] [ samm:property :micKeywords; samm:optional true ] [ samm:property :micDomain; samm:optional true ] [ samm:property :micConfidentiality; samm:optional true ] [ samm:property :micLicense; samm:optional true ] [ samm:property :micUseRestrictions; samm:optional true ] [ samm:property :micDocumentationUri; samm:optional true ] [ samm:property :micContact; samm:optional true ] [ samm:property :micChangeLog; samm:optional true ] ) .
+#######################################################################
+# PDM SUB-ENTITIES (Level 2)
+#######################################################################
 
+:MetadataEntity a samm:Entity ;
+   samm:preferredName "Metadata"@en ;
+   samm:description "Descriptive and governance metadata."@en ;
+   samm:properties (
+      :modelName
+      :modelPurpose
+      [ samm:property :author; samm:optional true ]
+      [ samm:property :providerName; samm:optional true ]
+      [ samm:property :physicalDomain; samm:optional true ]
+      [ samm:property :micKeywords; samm:optional true ]
+      [ samm:property :micConfidentiality; samm:optional true ]
+      [ samm:property :micLicense; samm:optional true ]
+      [ samm:property :micUseRestrictions; samm:optional true ]
+      [ samm:property :micDocumentationUri; samm:optional true ]
+      [ samm:property :micContact; samm:optional true ]
+      [ samm:property :micOwner; samm:optional true ]
+      [ samm:property :simulationType; samm:optional true ]
+   ) .
+
+:BomStructureEntity a samm:Entity ;
+   samm:preferredName "BOM Structure"@en ;
+   samm:properties (
+      [ samm:property :relatedPartNumber; samm:optional true ]
+      [ samm:property :relatedPartId; samm:optional true ]
+   ) .
+
+:ChangeInfoEntity a samm:Entity ;
+   samm:preferredName "Change Information"@en ;
+   samm:properties (
+      [ samm:property :micCreatedAt; samm:optional true ]
+      [ samm:property :micUpdatedAt; samm:optional true ]
+      [ samm:property :micChangeLog; samm:optional true ]
+   ) .
+
+:VersionInfoEntity a samm:Entity ;
+   samm:preferredName "Version Information"@en ;
+   samm:properties (
+      :modelVersion
+      [ samm:property :micLifecycleState; samm:optional true ]
+   ) .
+
+:ConfigurationEntity a samm:Entity ;
+   samm:preferredName "Configuration"@en ;
+   samm:properties ( [ samm:property :configurationNotes; samm:optional true ] ) .
+
+# --- PDM Property Definitions (The missing link!) ---
+
+:metadata a samm:Property ;
+   samm:preferredName "Metadata"@en ;
+   samm:characteristic :MetadataCharacteristic .
+
+:bomStructure a samm:Property ;
+   samm:preferredName "BOM Structure"@en ;
+   samm:characteristic :BomStructureCharacteristic .
+
+:changeInfo a samm:Property ;
+   samm:preferredName "Change Information"@en ;
+   samm:characteristic :ChangeInfoCharacteristic .
+
+:versionInfo a samm:Property ;
+   samm:preferredName "Version Information"@en ;
+   samm:characteristic :VersionInfoCharacteristic .
+
+:configuration a samm:Property ;
+   samm:preferredName "Configuration"@en ;
+   samm:characteristic :ConfigurationCharacteristic .
+
+# --- Characteristics for PDM Sub-Entities ---
+
+:MetadataCharacteristic a samm:Characteristic ;
+   samm:preferredName "Metadata Characteristic"@en ;
+   samm:dataType :MetadataEntity .
+
+:BomStructureCharacteristic a samm:Characteristic ;
+   samm:preferredName "BOM Structure Characteristic"@en ;
+   samm:dataType :BomStructureEntity .
+
+:ChangeInfoCharacteristic a samm:Characteristic ;
+   samm:preferredName "Change Info Characteristic"@en ;
+   samm:dataType :ChangeInfoEntity .
+
+:VersionInfoCharacteristic a samm:Characteristic ;
+   samm:preferredName "Version Info Characteristic"@en ;
+   samm:dataType :VersionInfoEntity .
+
+:ConfigurationCharacteristic a samm:Characteristic ;
+   samm:preferredName "Configuration Characteristic"@en ;
+   samm:dataType :ConfigurationEntity .
+
+#######################################################################
+# PROPERTIES & DEFINITIONS
+#######################################################################
+
+# --- Metadata Fields ---
 :modelName a samm:Property ;
    samm:preferredName "Model Name"@en ;
    samm:characteristic samm-c:Text .
@@ -116,37 +254,49 @@
    samm:preferredName "Model Purpose"@en ;
    samm:characteristic samm-c:Text .
 
-:simulationType a samm:Property ;
-   samm:preferredName "Simulation Type"@en ;
-   samm:characteristic :SimulationTypeEnum .
-
-:physicalDomain a samm:Property ;
-   samm:preferredName "Physical Domain"@en ;
-   samm:characteristic :PhysicalDomainEnum .
-
-:modelVersion a samm:Property ;
-   samm:preferredName "Model Version"@en ;
-   samm:characteristic :VersionTrait .
-
 :author a samm:Property ;
    samm:preferredName "Author"@en ;
-   samm:characteristic samm-c:Text .
-
-:creationTimestamp a samm:Property ;
-   samm:preferredName "Creation Timestamp"@en ;
-   samm:characteristic samm-c:Timestamp .
-
-:description a samm:Property ;
-   samm:preferredName "Description"@en ;
    samm:characteristic samm-c:Text .
 
 :providerName a samm:Property ;
    samm:preferredName "Provider Name"@en ;
    samm:characteristic samm-c:Text .
 
-:metadataTimestamp a samm:Property ;
-   samm:preferredName "Metadata Timestamp"@en ;
-   samm:characteristic samm-c:Timestamp .
+:physicalDomain a samm:Property ;
+   samm:preferredName "Physical Domain"@en ;
+   samm:characteristic samm-c:Text .
+
+:simulationType a samm:Property ;
+   samm:preferredName "Simulation Type"@en ;
+   samm:characteristic samm-c:Text .
+
+:micKeywords a samm:Property ;
+   samm:preferredName "Keywords"@en ;
+   samm:characteristic samm-c:Text .
+
+:micConfidentiality a samm:Property ;
+   samm:preferredName "Confidentiality"@en ;
+   samm:characteristic samm-c:Text .
+
+:micLicense a samm:Property ;
+   samm:preferredName "License"@en ;
+   samm:characteristic samm-c:Text .
+
+:micUseRestrictions a samm:Property ;
+   samm:preferredName "Use Restrictions"@en ;
+   samm:characteristic samm-c:Text .
+
+:micDocumentationUri a samm:Property ;
+   samm:preferredName "Documentation URI"@en ;
+   samm:characteristic samm-c:Text .
+
+:micContact a samm:Property ;
+   samm:preferredName "Contact"@en ;
+   samm:characteristic samm-c:Text .
+
+:micOwner a samm:Property ;
+   samm:preferredName "Owner"@en ;
+   samm:characteristic samm-c:Text .
 
 :relatedPartNumber a samm:Property ;
    samm:preferredName "Related Part Number"@en ;
@@ -154,6 +304,30 @@
 
 :relatedPartId a samm:Property ;
    samm:preferredName "Related Part ID"@en ;
+   samm:characteristic samm-c:Text .
+
+:micCreatedAt a samm:Property ;
+   samm:preferredName "Created At"@en ;
+   samm:characteristic samm-c:Timestamp .
+
+:micUpdatedAt a samm:Property ;
+   samm:preferredName "Updated At"@en ;
+   samm:characteristic samm-c:Timestamp .
+
+:micChangeLog a samm:Property ;
+   samm:preferredName "Change Log"@en ;
+   samm:characteristic samm-c:Text .
+
+:modelVersion a samm:Property ;
+   samm:preferredName "Model Version"@en ;
+   samm:characteristic :VersionTrait .
+
+:micLifecycleState a samm:Property ;
+   samm:preferredName "Lifecycle State"@en ;
+   samm:characteristic samm-c:Text .
+
+:configurationNotes a samm:Property ;
+   samm:preferredName "Configuration Notes"@en ;
    samm:characteristic samm-c:Text .
 
 :fileUri a samm:Property ;
@@ -166,11 +340,11 @@
 
 :binarySize a samm:Property ;
    samm:preferredName "Binary Size"@en ;
-   samm:characteristic samm-c:Text .
+   samm:characteristic :NonNegativeIntegerTextTrait .
 
 :checksumSha256 a samm:Property ;
    samm:preferredName "Checksum SHA-256"@en ;
-   samm:characteristic samm-c:Text .
+   samm:characteristic :Sha256HexTextTrait .
 
 :requirementId a samm:Property ;
    samm:preferredName "Requirement ID"@en ;
@@ -180,87 +354,43 @@
    samm:preferredName "Requirement Title"@en ;
    samm:characteristic samm-c:Text .
 
-:micIdentifier a samm:Property ;
-   samm:preferredName "MIC Identifier"@en ;
-   samm:characteristic samm-c:Text .
+# --- Simple Text Description Fields ---
+:topologyDescription a samm:Property ; samm:characteristic samm-c:Text .
+:controlDescription a samm:Property ; samm:characteristic samm-c:Text .
+:eeDescription a samm:Property ; samm:characteristic samm-c:Text .
+:softwareDescription a samm:Property ; samm:characteristic samm-c:Text .
+:mechanicsDescription a samm:Property ; samm:characteristic samm-c:Text .
+:functionsDescription a samm:Property ; samm:characteristic samm-c:Text .
+:solverSettingsText a samm:Property ; samm:characteristic samm-c:Text .
+:generalSettingsText a samm:Property ; samm:characteristic samm-c:Text .
+:loadCasesText a samm:Property ; samm:characteristic samm-c:Text .
+:startConditionsText a samm:Property ; samm:characteristic samm-c:Text .
+:boundaryConditionsText a samm:Property ; samm:characteristic samm-c:Text .
+:testCasesText a samm:Property ; samm:characteristic samm-c:Text .
+:ecuDescription a samm:Property ; samm:characteristic samm-c:Text .
+:hilDescription a samm:Property ; samm:characteristic samm-c:Text .
+:keyResultsText a samm:Property ; samm:characteristic samm-c:Text .
+:reportsText a samm:Property ; samm:characteristic samm-c:Text .
+:postProcessingText a samm:Property ; samm:characteristic samm-c:Text .
+:generalPropertiesText a samm:Property ; samm:characteristic samm-c:Text .
+:parametersText a samm:Property ; samm:characteristic samm-c:Text .
+:stateVariablesText a samm:Property ; samm:characteristic samm-c:Text .
+:characteristicDiagramsText a samm:Property ; samm:characteristic samm-c:Text .
+:analysisRequirementLinks a samm:Property ; samm:characteristic :RequirementReferenceSet .
 
-:micName a samm:Property ;
-   samm:preferredName "MIC Name"@en ;
-   samm:characteristic samm-c:Text .
-
-:micVersion a samm:Property ;
-   samm:preferredName "MIC Version"@en ;
-   samm:characteristic samm-c:Text .
-
-:micLifecycleState a samm:Property ;
-   samm:preferredName "MIC Lifecycle State"@en ;
-   samm:characteristic samm-c:Text .
-
-:micOwner a samm:Property ;
-   samm:preferredName "MIC Owner"@en ;
-   samm:characteristic samm-c:Text .
-
-:micCreatedAt a samm:Property ;
-   samm:preferredName "MIC Created At"@en ;
-   samm:characteristic samm-c:Timestamp .
-
-:micUpdatedAt a samm:Property ;
-   samm:preferredName "MIC Updated At"@en ;
-   samm:characteristic samm-c:Timestamp .
-
-:micDescription a samm:Property ;
-   samm:preferredName "MIC Description"@en ;
-   samm:characteristic samm-c:Text .
-
-:micKeywords a samm:Property ;
-   samm:preferredName "MIC Keywords"@en ;
-   samm:characteristic samm-c:Text .
-
-:micDomain a samm:Property ;
-   samm:preferredName "MIC Domain"@en ;
-   samm:characteristic samm-c:Text .
-
-:micConfidentiality a samm:Property ;
-   samm:preferredName "MIC Confidentiality"@en ;
-   samm:characteristic samm-c:Text .
-
-:micLicense a samm:Property ;
-   samm:preferredName "MIC License"@en ;
-   samm:characteristic samm-c:Text .
-
-:micUseRestrictions a samm:Property ;
-   samm:preferredName "MIC Use Restrictions"@en ;
-   samm:characteristic samm-c:Text .
-
-:micDocumentationUri a samm:Property ;
-   samm:preferredName "MIC Documentation URI"@en ;
-   samm:characteristic samm-c:Text .
-
-:micContact a samm:Property ;
-   samm:preferredName "MIC Contact"@en ;
-   samm:characteristic samm-c:Text .
-
-:micChangeLog a samm:Property ;
-   samm:preferredName "MIC Change Log"@en ;
-   samm:characteristic samm-c:Text .
-
-:SimulationTypeEnum a samm-c:Enumeration ;
-   samm:preferredName "Simulation Type Enumeration"@en ;
-   samm:dataType xsd:string ;
-   samm-c:values ( "Thermal" "SoftwareInTheLoop" "SystemSimulation" "CFD" "Structural" "Electromagnetic" "Generic" ) .
-
-:PhysicalDomainEnum a samm-c:Enumeration ;
-   samm:preferredName "Physical Domain Enumeration"@en ;
-   samm:dataType xsd:string ;
-   samm-c:values ( "Thermal" "Mechanical" "Fluid" "Electrical" "Multidomain" "Generic" ) .
-
+# --- Traits ---
 :VersionTrait a samm-c:Trait ;
-   samm:preferredName "Version Trait"@en ;
-   samm:description "Semantic version constraint following SemVer."@en ;
    samm-c:baseCharacteristic samm-c:Text ;
    samm-c:constraint :SemanticVersionRegex .
-
 :SemanticVersionRegex a samm-c:RegularExpressionConstraint ;
-   samm:preferredName "Semantic Version Regex"@en ;
    samm:value "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[\\w\\.]+)?(?:\\+[\\w\\.]+)?$" .
-
+:NonNegativeIntegerRegex a samm-c:RegularExpressionConstraint ;
+   samm:value "^[0-9]+$" .
+:NonNegativeIntegerTextTrait a samm-c:Trait ;
+   samm-c:baseCharacteristic samm-c:Text ;
+   samm-c:constraint :NonNegativeIntegerRegex .
+:Sha256HexRegex a samm-c:RegularExpressionConstraint ;
+   samm:value "^[A-Fa-f0-9]{64}$" .
+:Sha256HexTextTrait a samm-c:Trait ;
+   samm-c:baseCharacteristic samm-c:Text ;
+   samm-c:constraint :Sha256HexRegex .
