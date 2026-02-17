@@ -1,7 +1,7 @@
 #######################################################################
-# Simulation Model Exchange - Version 1.5.1
-# Fix: Removed external dependency on 'shared.uuid'. 
-#      UUID trait is now defined locally to ensure import success.
+# Simulation Model Exchange - Version 1.6.0
+# Change: Added comprehensive descriptions to all elements to explain 
+#         data intent and usage.
 # SPDX-License-Identifier: CC-BY-4.0
 #######################################################################
 
@@ -9,12 +9,12 @@
 @prefix samm-c: <urn:samm:org.eclipse.esmf.samm:characteristic:2.1.0#> .
 @prefix samm-e: <urn:samm:org.eclipse.esmf.samm:entity:2.1.0#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix : <urn:samm:io.catenax.simulation_model.minimal:1.5.1#> .
+@prefix : <urn:samm:io.catenax.simulation_model.minimal:1.6.0#> .
 
 :SimulationModel a samm:Aspect ;
    samm:preferredName "Simulation Model"@en ;
-   samm:description "Simulation model aspect regrouped by ProSTEP Smart SE categories."@en ;
-   samm:version "1.5.1" ;
+   samm:description "A semantic model for exchanging simulation models (e.g., FMUs, CAE decks) compliant with ProSTEP SmartSE recommendations. It groups metadata into PDM, Model, Analysis, Hardware, and Result categories."@en ;
+   samm:version "1.6.0" ;
    samm:properties ( :catenaXId
                      :pdmInformation
                      :modelInformation
@@ -33,41 +33,48 @@
 
 :catenaXId a samm:Property ;
    samm:preferredName "Catena-X ID"@en ;
-   samm:description "The Catena-X ID of this simulation model instance."@en ;
+   samm:description "The globally unique identifier (UUID v4) for this specific simulation model instance within the Catena-X dataspace."@en ;
    samm:characteristic :UuidV4Trait ;
    samm:exampleValue "055c1128-0375-47c8-98de-7cf802c3241d" .
 
 :simulationModelBinary a samm:Property ;
    samm:preferredName "Simulation Model Binaries"@en ;
-   samm:description "Set of external binary model items associated with this simulation."@en ;
+   samm:description "A collection of references to the actual binary files (e.g., FMU, loose files) associated with this simulation model. These point to external storage via their own Catena-X IDs."@en ;
    samm:characteristic :SetOfExternalBinaryModelDataCharacteristic .
 
 :pdmInformation a samm:Property ;
    samm:preferredName "PDM Information"@en ;
+   samm:description "Organizational metadata including versioning, authorship, lifecycle state, and bill of materials (BOM) context."@en ;
    samm:characteristic :PdmInformationCharacteristic .
 
 :modelInformation a samm:Property ;
    samm:preferredName "Model Information"@en ;
+   samm:description "Technical description of the model's domains, including topology, control logic, software, mechanics, and electrical/electronic systems."@en ;
    samm:characteristic :ModelInformationCharacteristic .
 
 :analysisSettings a samm:Property ;
    samm:preferredName "Analysis Settings"@en ;
+   samm:description "Configuration settings required to run the simulation, including solver setup, load cases, boundary conditions, and start values."@en ;
    samm:characteristic :AnalysisSettingsCharacteristic .
 
 :hardwareInformation a samm:Property ;
    samm:preferredName "Hardware Information"@en ;
+   samm:description "Details regarding the hardware environment if the model is designed for HIL (Hardware-in-the-Loop) or specific ECU targets."@en ;
    samm:characteristic :HardwareInformationCharacteristic .
 
 :results a samm:Property ;
    samm:preferredName "Results"@en ;
+   samm:description "Summary of simulation outcomes, key performance indicators (KPIs), and references to generated reports."@en ;
    samm:characteristic :ResultsCharacteristic .
 
 :modelProperties a samm:Property ;
    samm:preferredName "Properties"@en ;
+   samm:description "General model parameters, state variables, and characteristic diagrams (lookup tables) used within the model."@en ;
    samm:characteristic :ModelPropertiesCharacteristic .
 
 :requirementReferences a samm:Property ;
    samm:preferredName "Requirement References"@en ;
+   samm:description "A list of requirements (ID and Title) that this simulation model validates or is based upon."@en ;
    samm:characteristic :RequirementReferenceSet .
 
 #######################################################################
@@ -76,26 +83,31 @@
 
 :SetOfExternalBinaryModelDataCharacteristic a samm-c:Set ;
    samm:preferredName "Set of External Binary Model Data"@en ;
+   samm:description "A set containing one or more links to external binary files."@en ;
    samm:dataType :ExternalBinaryModelDataEntity .
 
 :ExternalBinaryModelDataEntity a samm:Entity ;
    samm:preferredName "External Binary Model Data"@en ;
+   samm:description "Represents a single external binary file. It includes the ID to fetch the file and tags to describe its role (e.g., 'Result', 'Model')."@en ;
    samm:properties ( :catenaXId
                      [ samm:property :semanticTags; samm:optional true ]
                      [ samm:property :customTags; samm:optional true ] ) .
 
 :semanticTags a samm:Property ;
    samm:preferredName "Semantic Tags"@en ;
+   samm:description "Standardized labels used to interpret the binary file's content (e.g., 'FMU', 'ParameterFile', 'ResultReport')."@en ;
    samm:characteristic :SetOfTagsCharacteristic ;
    samm:exampleValue "FMU" .
 
 :customTags a samm:Property ;
    samm:preferredName "Custom Tags"@en ;
+   samm:description "User-defined labels for project-specific categorization or internal workflow identifiers."@en ;
    samm:characteristic :SetOfTagsCharacteristic ;
    samm:exampleValue "BatteryPack_V3" .
 
 :SetOfTagsCharacteristic a samm-c:Set ;
    samm:preferredName "Set of Tags"@en ;
+   samm:description "A collection of text strings used for tagging."@en ;
    samm:dataType xsd:string .
 
 #######################################################################
@@ -104,30 +116,37 @@
 
 :PdmInformationEntity a samm:Entity ;
    samm:preferredName "PDM Information"@en ;
+   samm:description "Entity grouping all Product Data Management (PDM) relevant metadata."@en ;
    samm:properties ( :metadata :bomStructure :changeInfo :versionInfo :configuration ) .
 
 :ModelInformationEntity a samm:Entity ;
    samm:preferredName "Model Information"@en ;
+   samm:description "Entity grouping technical descriptions of the model's physics and logic."@en ;
    samm:properties ( :topologyDescription :controlDescription :eeDescription :softwareDescription :mechanicsDescription :functionsDescription ) .
 
 :AnalysisSettingsEntity a samm:Entity ;
    samm:preferredName "Analysis Settings"@en ;
+   samm:description "Entity grouping all configuration parameters needed to execute the analysis."@en ;
    samm:properties ( :analysisRequirementLinks :solverSettingsText :generalSettingsText :loadCasesText :startConditionsText :boundaryConditionsText :testCasesText ) .
 
 :HardwareInformationEntity a samm:Entity ;
    samm:preferredName "Hardware Information"@en ;
+   samm:description "Entity grouping descriptions of the associated hardware targets (ECU/HIL)."@en ;
    samm:properties ( :ecuDescription :hilDescription ) .
 
 :ResultsEntity a samm:Entity ;
    samm:preferredName "Results"@en ;
+   samm:description "Entity grouping text-based summaries of the simulation output."@en ;
    samm:properties ( :keyResultsText :reportsText :postProcessingText ) .
 
 :ModelPropertiesEntity a samm:Entity ;
    samm:preferredName "Model Properties"@en ;
+   samm:description "Entity grouping internal model variables and parameters."@en ;
    samm:properties ( :generalPropertiesText :parametersText :stateVariablesText :characteristicDiagramsText ) .
 
 :RequirementReferenceEntity a samm:Entity ;
    samm:preferredName "Requirement Reference Entity"@en ;
+   samm:description "Entity representing a single requirement link with an ID and a human-readable title."@en ;
    samm:properties ( :requirementId :requirementTitle ) .
 
 #######################################################################
@@ -136,98 +155,300 @@
 
 :MetadataEntity a samm:Entity ;
    samm:preferredName "Metadata Entity"@en ;
+   samm:description "General descriptive metadata about the model's purpose, origin, and constraints."@en ;
    samm:properties ( :modelName :modelPurpose [ samm:property :author; samm:optional true ] [ samm:property :providerName; samm:optional true ] [ samm:property :physicalDomain; samm:optional true ] [ samm:property :micKeywords; samm:optional true ] [ samm:property :micConfidentiality; samm:optional true ] [ samm:property :micLicense; samm:optional true ] [ samm:property :micUseRestrictions; samm:optional true ] [ samm:property :micDocumentationUri; samm:optional true ] [ samm:property :micContact; samm:optional true ] [ samm:property :micOwner; samm:optional true ] [ samm:property :simulationType; samm:optional true ] ) .
 
 :BomStructureEntity a samm:Entity ;
    samm:preferredName "BOM Structure Entity"@en ;
+   samm:description "Links to the physical parts or bill of materials that this simulation represents."@en ;
    samm:properties ( [ samm:property :relatedPartNumber; samm:optional true ] [ samm:property :relatedPartId; samm:optional true ] ) .
 
 :ChangeInfoEntity a samm:Entity ;
    samm:preferredName "Change Information Entity"@en ;
+   samm:description "Timestamps and logs tracking the modification history of the model."@en ;
    samm:properties ( [ samm:property :micCreatedAt; samm:optional true ] [ samm:property :micUpdatedAt; samm:optional true ] [ samm:property :micChangeLog; samm:optional true ] ) .
 
 :VersionInfoEntity a samm:Entity ;
    samm:preferredName "Version Information Entity"@en ;
+   samm:description "Versioning and lifecycle status information."@en ;
    samm:properties ( :modelVersion [ samm:property :micLifecycleState; samm:optional true ] ) .
 
 :ConfigurationEntity a samm:Entity ;
    samm:preferredName "Configuration Entity"@en ;
+   samm:description "Notes on the specific model configuration or variant."@en ;
    samm:properties ( [ samm:property :configurationNotes; samm:optional true ] ) .
 
-:metadata a samm:Property ; samm:characteristic :MetadataCharacteristic .
-:bomStructure a samm:Property ; samm:characteristic :BomStructureCharacteristic .
-:changeInfo a samm:Property ; samm:characteristic :ChangeInfoCharacteristic .
-:versionInfo a samm:Property ; samm:characteristic :VersionInfoCharacteristic .
-:configuration a samm:Property ; samm:characteristic :ConfigurationCharacteristic .
+:metadata a samm:Property ; 
+    samm:preferredName "Metadata"@en ;
+    samm:description "Descriptive and governance metadata properties."@en ;
+    samm:characteristic :MetadataCharacteristic .
+
+:bomStructure a samm:Property ; 
+    samm:preferredName "BOM Structure"@en ;
+    samm:description "References to the physical parts represented by this model."@en ;
+    samm:characteristic :BomStructureCharacteristic .
+
+:changeInfo a samm:Property ; 
+    samm:preferredName "Change Information"@en ;
+    samm:description "Audit trail information (creation dates, updates, logs)."@en ;
+    samm:characteristic :ChangeInfoCharacteristic .
+
+:versionInfo a samm:Property ; 
+    samm:preferredName "Version Information"@en ;
+    samm:description "Model version and lifecycle state."@en ;
+    samm:characteristic :VersionInfoCharacteristic .
+
+:configuration a samm:Property ; 
+    samm:preferredName "Configuration"@en ;
+    samm:description "Configuration specific notes."@en ;
+    samm:characteristic :ConfigurationCharacteristic .
 
 #######################################################################
 # CHARACTERISTICS (Linking Entities)
 #######################################################################
 
-:PdmInformationCharacteristic a samm:Characteristic ; samm:dataType :PdmInformationEntity .
-:ModelInformationCharacteristic a samm:Characteristic ; samm:dataType :ModelInformationEntity .
-:AnalysisSettingsCharacteristic a samm:Characteristic ; samm:dataType :AnalysisSettingsEntity .
-:HardwareInformationCharacteristic a samm:Characteristic ; samm:dataType :HardwareInformationEntity .
-:ResultsCharacteristic a samm:Characteristic ; samm:dataType :ResultsEntity .
-:ModelPropertiesCharacteristic a samm:Characteristic ; samm:dataType :ModelPropertiesEntity .
-:RequirementReferenceSet a samm-c:Set ; samm:dataType :RequirementReferenceEntity .
+:PdmInformationCharacteristic a samm:Characteristic ; samm:preferredName "PDM Info Characteristic"@en ; samm:description "Characteristic for PDM Entity."@en ; samm:dataType :PdmInformationEntity .
+:ModelInformationCharacteristic a samm:Characteristic ; samm:preferredName "Model Info Characteristic"@en ; samm:description "Characteristic for Model Info Entity."@en ; samm:dataType :ModelInformationEntity .
+:AnalysisSettingsCharacteristic a samm:Characteristic ; samm:preferredName "Analysis Settings Characteristic"@en ; samm:description "Characteristic for Analysis Settings Entity."@en ; samm:dataType :AnalysisSettingsEntity .
+:HardwareInformationCharacteristic a samm:Characteristic ; samm:preferredName "Hardware Info Characteristic"@en ; samm:description "Characteristic for Hardware Info Entity."@en ; samm:dataType :HardwareInformationEntity .
+:ResultsCharacteristic a samm:Characteristic ; samm:preferredName "Results Characteristic"@en ; samm:description "Characteristic for Results Entity."@en ; samm:dataType :ResultsEntity .
+:ModelPropertiesCharacteristic a samm:Characteristic ; samm:preferredName "Model Properties Characteristic"@en ; samm:description "Characteristic for Model Properties Entity."@en ; samm:dataType :ModelPropertiesEntity .
+:RequirementReferenceSet a samm-c:Set ; samm:preferredName "Requirement Set"@en ; samm:description "Set of Requirement References."@en ; samm:dataType :RequirementReferenceEntity .
 
-:MetadataCharacteristic a samm:Characteristic ; samm:dataType :MetadataEntity .
-:BomStructureCharacteristic a samm:Characteristic ; samm:dataType :BomStructureEntity .
-:ChangeInfoCharacteristic a samm:Characteristic ; samm:dataType :ChangeInfoEntity .
-:VersionInfoCharacteristic a samm:Characteristic ; samm:dataType :VersionInfoEntity .
-:ConfigurationCharacteristic a samm:Characteristic ; samm:dataType :ConfigurationEntity .
+:MetadataCharacteristic a samm:Characteristic ; samm:preferredName "Metadata Characteristic"@en ; samm:description "Characteristic for Metadata Entity."@en ; samm:dataType :MetadataEntity .
+:BomStructureCharacteristic a samm:Characteristic ; samm:preferredName "BOM Characteristic"@en ; samm:description "Characteristic for BOM Entity."@en ; samm:dataType :BomStructureEntity .
+:ChangeInfoCharacteristic a samm:Characteristic ; samm:preferredName "Change Info Characteristic"@en ; samm:description "Characteristic for Change Info Entity."@en ; samm:dataType :ChangeInfoEntity .
+:VersionInfoCharacteristic a samm:Characteristic ; samm:preferredName "Version Info Characteristic"@en ; samm:description "Characteristic for Version Info Entity."@en ; samm:dataType :VersionInfoEntity .
+:ConfigurationCharacteristic a samm:Characteristic ; samm:preferredName "Configuration Characteristic"@en ; samm:description "Characteristic for Configuration Entity."@en ; samm:dataType :ConfigurationEntity .
 
 #######################################################################
-# ATOMIC PROPERTIES
+# ATOMIC PROPERTIES (With Descriptions)
 #######################################################################
 
-:modelName a samm:Property ; samm:characteristic samm-c:Text .
-:modelPurpose a samm:Property ; samm:characteristic samm-c:Text .
-:author a samm:Property ; samm:characteristic samm-c:Text .
-:providerName a samm:Property ; samm:characteristic samm-c:Text .
-:physicalDomain a samm:Property ; samm:characteristic samm-c:Text .
-:simulationType a samm:Property ; samm:characteristic samm-c:Text .
-:micKeywords a samm:Property ; samm:characteristic samm-c:Text .
-:micConfidentiality a samm:Property ; samm:characteristic samm-c:Text .
-:micLicense a samm:Property ; samm:characteristic samm-c:Text .
-:micUseRestrictions a samm:Property ; samm:characteristic samm-c:Text .
-:micDocumentationUri a samm:Property ; samm:characteristic samm-c:Text .
-:micContact a samm:Property ; samm:characteristic samm-c:Text .
-:micOwner a samm:Property ; samm:characteristic samm-c:Text .
-:relatedPartNumber a samm:Property ; samm:characteristic samm-c:Text .
-:relatedPartId a samm:Property ; samm:characteristic samm-c:Text .
-:micCreatedAt a samm:Property ; samm:characteristic samm-c:Timestamp .
-:micUpdatedAt a samm:Property ; samm:characteristic samm-c:Timestamp .
-:micChangeLog a samm:Property ; samm:characteristic samm-c:Text .
-:modelVersion a samm:Property ; samm:characteristic :VersionTrait .
-:micLifecycleState a samm:Property ; samm:characteristic samm-c:Text .
-:configurationNotes a samm:Property ; samm:characteristic samm-c:Text .
-:requirementId a samm:Property ; samm:characteristic samm-c:Text .
-:requirementTitle a samm:Property ; samm:characteristic samm-c:Text .
+:modelName a samm:Property ; 
+    samm:preferredName "Model Name"@en ;
+    samm:description "The human-readable name of the simulation model."@en ;
+    samm:characteristic samm-c:Text .
 
-:topologyDescription a samm:Property ; samm:characteristic samm-c:Text .
-:controlDescription a samm:Property ; samm:characteristic samm-c:Text .
-:eeDescription a samm:Property ; samm:characteristic samm-c:Text .
-:softwareDescription a samm:Property ; samm:characteristic samm-c:Text .
-:mechanicsDescription a samm:Property ; samm:characteristic samm-c:Text .
-:functionsDescription a samm:Property ; samm:characteristic samm-c:Text .
-:solverSettingsText a samm:Property ; samm:characteristic samm-c:Text .
-:generalSettingsText a samm:Property ; samm:characteristic samm-c:Text .
-:loadCasesText a samm:Property ; samm:characteristic samm-c:Text .
-:startConditionsText a samm:Property ; samm:characteristic samm-c:Text .
-:boundaryConditionsText a samm:Property ; samm:characteristic samm-c:Text .
-:testCasesText a samm:Property ; samm:characteristic samm-c:Text .
-:ecuDescription a samm:Property ; samm:characteristic samm-c:Text .
-:hilDescription a samm:Property ; samm:characteristic samm-c:Text .
-:keyResultsText a samm:Property ; samm:characteristic samm-c:Text .
-:reportsText a samm:Property ; samm:characteristic samm-c:Text .
-:postProcessingText a samm:Property ; samm:characteristic samm-c:Text .
-:generalPropertiesText a samm:Property ; samm:characteristic samm-c:Text .
-:parametersText a samm:Property ; samm:characteristic samm-c:Text .
-:stateVariablesText a samm:Property ; samm:characteristic samm-c:Text .
-:characteristicDiagramsText a samm:Property ; samm:characteristic samm-c:Text .
-:analysisRequirementLinks a samm:Property ; samm:characteristic :RequirementReferenceSet .
+:modelPurpose a samm:Property ; 
+    samm:preferredName "Model Purpose"@en ;
+    samm:description "A text description explaining what this model is used for (e.g., 'Thermal validation of battery pack')."@en ;
+    samm:characteristic samm-c:Text .
+
+:author a samm:Property ; 
+    samm:preferredName "Author"@en ;
+    samm:description "The name or email of the person or system that created the model."@en ;
+    samm:characteristic samm-c:Text .
+
+:providerName a samm:Property ; 
+    samm:preferredName "Provider Name"@en ;
+    samm:description "The name of the company or organization providing this model."@en ;
+    samm:characteristic samm-c:Text .
+
+:physicalDomain a samm:Property ; 
+    samm:preferredName "Physical Domain"@en ;
+    samm:description "The physics domain covered by the model (e.g., 'Mechanics', 'Thermodynamics', 'Fluid Dynamics')."@en ;
+    samm:characteristic samm-c:Text .
+
+:simulationType a samm:Property ; 
+    samm:preferredName "Simulation Type"@en ;
+    samm:description "The method of simulation (e.g., 'FEM', 'CFD', '1D-System', 'MBS')."@en ;
+    samm:characteristic samm-c:Text .
+
+:micKeywords a samm:Property ; 
+    samm:preferredName "Keywords"@en ;
+    samm:description "Comma-separated keywords to facilitate search and classification."@en ;
+    samm:characteristic samm-c:Text .
+
+:micConfidentiality a samm:Property ; 
+    samm:preferredName "Confidentiality"@en ;
+    samm:description "The confidentiality classification of the model (e.g., 'Public', 'Internal', 'Strictly Confidential')."@en ;
+    samm:characteristic samm-c:Text .
+
+:micLicense a samm:Property ; 
+    samm:preferredName "License"@en ;
+    samm:description "The license text or reference URI governing the use of the model."@en ;
+    samm:characteristic samm-c:Text .
+
+:micUseRestrictions a samm:Property ; 
+    samm:preferredName "Use Restrictions"@en ;
+    samm:description "Specific constraints on how the model may be used (e.g., 'Not for safety-critical simulations')."@en ;
+    samm:characteristic samm-c:Text .
+
+:micDocumentationUri a samm:Property ; 
+    samm:preferredName "Documentation URI"@en ;
+    samm:description "A URL pointing to external documentation, wiki pages, or specifications."@en ;
+    samm:characteristic samm-c:Text .
+
+:micContact a samm:Property ; 
+    samm:preferredName "Contact"@en ;
+    samm:description "Contact information for technical support regarding the model."@en ;
+    samm:characteristic samm-c:Text .
+
+:micOwner a samm:Property ; 
+    samm:preferredName "Owner"@en ;
+    samm:description "The entity or department that legally owns the model asset."@en ;
+    samm:characteristic samm-c:Text .
+
+:relatedPartNumber a samm:Property ; 
+    samm:preferredName "Related Part Number"@en ;
+    samm:description "The manufacturer part number of the physical component being simulated."@en ;
+    samm:characteristic samm-c:Text .
+
+:relatedPartId a samm:Property ; 
+    samm:preferredName "Related Part ID"@en ;
+    samm:description "The unique database ID (e.g., Catena-X Part ID) of the physical component."@en ;
+    samm:characteristic samm-c:Text .
+
+:micCreatedAt a samm:Property ; 
+    samm:preferredName "Created At"@en ;
+    samm:description "The timestamp when this simulation model entry was first created."@en ;
+    samm:characteristic samm-c:Timestamp .
+
+:micUpdatedAt a samm:Property ; 
+    samm:preferredName "Updated At"@en ;
+    samm:description "The timestamp when this simulation model entry was last modified."@en ;
+    samm:characteristic samm-c:Timestamp .
+
+:micChangeLog a samm:Property ; 
+    samm:preferredName "Change Log"@en ;
+    samm:description "A text log or summary of changes made in the most recent version."@en ;
+    samm:characteristic samm-c:Text .
+
+:modelVersion a samm:Property ; 
+    samm:preferredName "Model Version"@en ;
+    samm:description "The semantic version of the model (e.g., 1.0.0)."@en ;
+    samm:characteristic :VersionTrait .
+
+:micLifecycleState a samm:Property ; 
+    samm:preferredName "Lifecycle State"@en ;
+    samm:description "The maturity state of the model (e.g., 'Draft', 'Released', 'Obsolete')."@en ;
+    samm:characteristic samm-c:Text .
+
+:configurationNotes a samm:Property ; 
+    samm:preferredName "Configuration Notes"@en ;
+    samm:description "Free text notes regarding the configuration settings."@en ;
+    samm:characteristic samm-c:Text .
+
+:requirementId a samm:Property ; 
+    samm:preferredName "Requirement ID"@en ;
+    samm:description "The identifier of a requirement (e.g., 'REQ-123') linked to this model."@en ;
+    samm:characteristic samm-c:Text .
+
+:requirementTitle a samm:Property ; 
+    samm:preferredName "Requirement Title"@en ;
+    samm:description "The short title or summary of the linked requirement."@en ;
+    samm:characteristic samm-c:Text .
+
+:topologyDescription a samm:Property ; 
+    samm:preferredName "Topology Description"@en ;
+    samm:description "Description of how the model components are connected (structure)."@en ;
+    samm:characteristic samm-c:Text .
+
+:controlDescription a samm:Property ; 
+    samm:preferredName "Control Description"@en ;
+    samm:description "Description of the control logic, controllers, or signal flow plans."@en ;
+    samm:characteristic samm-c:Text .
+
+:eeDescription a samm:Property ; 
+    samm:preferredName "E/E Description"@en ;
+    samm:description "Description of the electrical and electronic components and wiring."@en ;
+    samm:characteristic samm-c:Text .
+
+:softwareDescription a samm:Property ; 
+    samm:preferredName "Software Description"@en ;
+    samm:description "Description of the embedded software or code functions represented in the model."@en ;
+    samm:characteristic samm-c:Text .
+
+:mechanicsDescription a samm:Property ; 
+    samm:preferredName "Mechanics Description"@en ;
+    samm:description "Description of mechanical bodies, joints, masses, and inertias."@en ;
+    samm:characteristic samm-c:Text .
+
+:functionsDescription a samm:Property ; 
+    samm:preferredName "Functions Description"@en ;
+    samm:description "Description of the overall functions or capabilities the model performs."@en ;
+    samm:characteristic samm-c:Text .
+
+:solverSettingsText a samm:Property ; 
+    samm:preferredName "Solver Settings"@en ;
+    samm:description "Details about solver configuration (algorithm, step size, tolerances)."@en ;
+    samm:characteristic samm-c:Text .
+
+:generalSettingsText a samm:Property ; 
+    samm:preferredName "General Settings"@en ;
+    samm:description "General simulation environment settings (e.g., units, gravity)."@en ;
+    samm:characteristic samm-c:Text .
+
+:loadCasesText a samm:Property ; 
+    samm:preferredName "Load Cases"@en ;
+    samm:description "Description of the load cases or duty cycles applied during simulation."@en ;
+    samm:characteristic samm-c:Text .
+
+:startConditionsText a samm:Property ; 
+    samm:preferredName "Start Conditions"@en ;
+    samm:description "Initial values and conditions at time t=0."@en ;
+    samm:characteristic samm-c:Text .
+
+:boundaryConditionsText a samm:Property ; 
+    samm:preferredName "Boundary Conditions"@en ;
+    samm:description "External constraints and environmental conditions applied to the model."@en ;
+    samm:characteristic samm-c:Text .
+
+:testCasesText a samm:Property ; 
+    samm:preferredName "Test Cases"@en ;
+    samm:description "Specific test scenarios or maneuvers executed."@en ;
+    samm:characteristic samm-c:Text .
+
+:ecuDescription a samm:Property ; 
+    samm:preferredName "ECU Description"@en ;
+    samm:description "Details about the Electronic Control Unit targeted by the simulation."@en ;
+    samm:characteristic samm-c:Text .
+
+:hilDescription a samm:Property ; 
+    samm:preferredName "HIL Description"@en ;
+    samm:description "Details regarding Hardware-in-the-Loop setups and real-time capability."@en ;
+    samm:characteristic samm-c:Text .
+
+:keyResultsText a samm:Property ; 
+    samm:preferredName "Key Results"@en ;
+    samm:description "A summary of the most important findings or KPIs from the simulation."@en ;
+    samm:characteristic samm-c:Text .
+
+:reportsText a samm:Property ; 
+    samm:preferredName "Reports"@en ;
+    samm:description "References to or summaries of detailed simulation reports."@en ;
+    samm:characteristic samm-c:Text .
+
+:postProcessingText a samm:Property ; 
+    samm:preferredName "Post Processing"@en ;
+    samm:description "Description of how raw data was processed to generate results."@en ;
+    samm:characteristic samm-c:Text .
+
+:generalPropertiesText a samm:Property ; 
+    samm:preferredName "General Properties"@en ;
+    samm:description "Miscellaneous properties and attributes of the model."@en ;
+    samm:characteristic samm-c:Text .
+
+:parametersText a samm:Property ; 
+    samm:preferredName "Parameters"@en ;
+    samm:description "Key parameters and calibration values used in the model."@en ;
+    samm:characteristic samm-c:Text .
+
+:stateVariablesText a samm:Property ; 
+    samm:preferredName "State Variables"@en ;
+    samm:description "Description of the main state variables tracked by the system."@en ;
+    samm:characteristic samm-c:Text .
+
+:characteristicDiagramsText a samm:Property ; 
+    samm:preferredName "Characteristic Diagrams"@en ;
+    samm:description "Description of lookup tables, curves, or maps used in the model."@en ;
+    samm:characteristic samm-c:Text .
+
+:analysisRequirementLinks a samm:Property ; 
+    samm:preferredName "Analysis Requirements"@en ;
+    samm:description "Requirements specifically linked to the analysis phase."@en ;
+    samm:characteristic :RequirementReferenceSet .
 
 #######################################################################
 # TRAITS AND CONSTRAINTS (Defined Locally)
@@ -235,14 +456,14 @@
 
 :VersionTrait a samm-c:Trait ;
    samm:preferredName "Version Trait"@en ;
+   samm:description "Restricts text to follow Semantic Versioning (Major.Minor.Patch)."@en ;
    samm-c:baseCharacteristic samm-c:Text ;
    samm-c:constraint :SemanticVersionRegex .
 
 :SemanticVersionRegex a samm-c:RegularExpressionConstraint ;
    samm:preferredName "Semantic Version Regex"@en ;
+   samm:description "Regex pattern for SemVer 2.0.0 compliance."@en ;
    samm:value "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[\\w\\.]+)?(?:\\+[\\w\\.]+)?$" .
-
-# --- NEW: Locally defined UUID Trait ---
 
 :UuidV4Trait a samm-c:Trait ;
    samm:preferredName "UUID v4 Trait"@en ;
