@@ -1,0 +1,86 @@
+{
+  "catenaXId": "055c1128-0375-47c8-98de-7cf802c3241d",
+  "pdmInformation": {
+    "metadata": {
+      "modelName": "bbHSbJV",
+      "modelPurpose": "T3gR",
+      "author": "XV",
+      "providerName": "LdmrWsu",
+      "physicalDomain": "nG8bb",
+      "micKeywords": "Td8LQseL",
+      "micConfidentiality": "BbL1",
+      "micLicense": "xd",
+      "micUseRestrictions": "F9cIX",
+      "micDocumentationUri": "l",
+      "micContact": "iJr",
+      "micOwner": "E69cw",
+      "simulationType": "fkSl"
+    },
+    "bomStructure": {
+      "relatedPartNumber": "dOZp5HMd",
+      "relatedPartId": "azlPhGN"
+    },
+    "changeInfo": {
+      "micCreatedAt": "2026-06-25T09:38:51.000Z",
+      "micUpdatedAt": "2026-06-25T09:38:51.000Z",
+      "micChangeLog": "sBRurqZi"
+    },
+    "versionInfo": {
+      "modelVersion": "0.2756493442707147693956523741117688906515986901408461413795922780052731575634159157219114826420754.498515324033352-.I.hrwiTv04SG3.DnF",
+      "micLifecycleState": "jWRTRp"
+    },
+    "configuration": {
+      "configurationNotes": "n7s6KDlue"
+    }
+  },
+  "modelInformation": {
+    "topologyDescription": "GFhj",
+    "controlDescription": "BlGPBbJHHI",
+    "eeDescription": "xXQc",
+    "softwareDescription": "4M",
+    "mechanicsDescription": "WSSv6",
+    "functionsDescription": "qRb5y7h2"
+  },
+  "analysisSettings": {
+    "analysisRequirementLinks": [
+      {
+        "requirementId": "H",
+        "requirementTitle": "2gKmM"
+      }
+    ],
+    "solverSettingsText": "hrIx",
+    "generalSettingsText": "Lbm80B",
+    "loadCasesText": "tV6HL",
+    "startConditionsText": "0vhFrZNtH3",
+    "boundaryConditionsText": "mS9Y3",
+    "testCasesText": "fFuI6ubeb"
+  },
+  "hardwareInformation": {
+    "ecuDescription": "1KBGpFAzYc",
+    "hilDescription": "lwo0p6nT"
+  },
+  "results": {
+    "keyResultsText": "b4Bm",
+    "reportsText": "wTKGWAF",
+    "postProcessingText": "xChKjXfRC"
+  },
+  "modelProperties": {
+    "generalPropertiesText": "swon98l",
+    "parametersText": "DWk3MS",
+    "stateVariablesText": "sZNnUf",
+    "characteristicDiagramsText": "hJUizEF"
+  },
+  "simulationModelBinary": [
+    {
+      "catenaXId": "055c1128-0375-47c8-98de-7cf802c3241d",
+      "semanticTags": "FMU",
+      "customTags": "BatteryPack_V3"
+    }
+  ],
+  "requirementReferences": [
+    {
+      "requirementId": "d",
+      "requirementTitle": "MwggVtHm"
+    }
+  ]
+}
