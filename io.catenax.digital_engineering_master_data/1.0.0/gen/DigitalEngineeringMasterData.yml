@@ -310,51 +310,6 @@ components:
       description: "Link  the digital CAD model used for design and manufacturing\
         \ (external and Catena-X-internal ressources, URN's). Based on IDTA SMT 020026\
         \  - Provision of 3D Models"
-    BoundingBoxLenght:
-      type: number
-      x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#BoundingBoxLenght"
-      description: "The minimal 3D box that fully encloses the part geometry (length\
-        \ x width x height),  units in millimetre."
-    BoundingBoxWidth:
-      type: number
-      x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#BoundingBoxWidth"
-      description: "The minimal 3D box that fully encloses the part geometry (length\
-        \ x width x height),  units in millimetre."
-    BoundingBoxHeight:
-      type: number
-      x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#BoundingBoxHeight"
-      description: "The minimal 3D box that fully encloses the part geometry (length\
-        \ x width x height),  units in millimetre."
-    BoundingBoxCharacteristic:
-      description: "The minimal 3D box that fully encloses the part geometry (length\
-        \ x width x height), units in millimetre."
-      x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#BoundingBoxCharacteristic"
-      type: object
-      properties:
-        boundingBoxPropertyLenght:
-          description: "The minimal 3D box that fully encloses the part geometry (length\
-            \ x width x height),  units in millimetre."
-          x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#boundingBoxPropertyLenght"
-          $ref: "#/components/schemas/BoundingBoxLenght"
-        boundingBoxPropertyWidth:
-          description: "The minimal 3D box that fully encloses the part geometry (length\
-            \ x width x height),,  units in millimetre."
-          x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#boundingBoxPropertyWidth"
-          $ref: "#/components/schemas/BoundingBoxWidth"
-        boundingBoxPropertyHeight:
-          description: "The minimal 3D box that fully encloses the part geometry (length\
-            \ x width x height),  units in millimetre."
-          x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#boundingBoxPropertyHeight"
-          $ref: "#/components/schemas/BoundingBoxHeight"
-      required:
-      - boundingBoxPropertyLenght
-      - boundingBoxPropertyWidth
-      - boundingBoxPropertyHeight
-    BoundingSphereCharacteristic:
-      type: number
-      x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#BoundingSphereCharacteristic"
-      description: "Diameter of the smallest possible sphere that fully encloses the\
-        \ part geometry. { \"value\": 315.0, \"unit\": \"mm\" }"
     CalculatedWeightCharacteristic:
       type: number
       x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#CalculatedWeightCharacteristic"
@@ -418,16 +373,6 @@ components:
             \ 020026 - Provision of 3D Models"
           x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#reference3DCADDrawing"
           $ref: "#/components/schemas/Reference3DCADDrawingCharacteristic"
-        boundingBox:
-          description: "The minimal 3D box that fully encloses the part geometry (length\
-            \ x width x height), units in millimetre."
-          x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#boundingBox"
-          $ref: "#/components/schemas/BoundingBoxCharacteristic"
-        boundingSphere:
-          description: "Diameter of the smallest possible sphere that fully encloses\
-            \ the part geometry. { \"value\": 315.0, \"unit\": \"mm\" }"
-          x-samm-aspect-model-urn: "urn:samm:io.catenax.digital_engineering_master_data:1.0.0#boundingSphere"
-          $ref: "#/components/schemas/BoundingSphereCharacteristic"
         calculatedWeight:
           description: "Mass of the part, typically in kilograms. Calculated out of\
             \ all belonging 3D-models"
@@ -480,8 +425,6 @@ components:
       required:
       - reference2DCADDrawing
       - reference3DCADDrawing
-      - boundingBox
-      - boundingSphere
       - calculatedWeight
       - calculatedWeightTolerance
       - centerOfGravity

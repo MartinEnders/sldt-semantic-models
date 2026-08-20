@@ -389,7 +389,7 @@
 :GeometryDataEntity a samm:Entity ;
    samm:preferredName "Geometry Data Entity"@en ;
    samm:description "Entity for all the Geometry Data of the Digital Master Data "@en ;
-   samm:properties ( :reference2DCADDrawing :reference3DCADDrawing :boundingBox :boundingSphere :calculatedWeight :calculatedWeightTolerance :centerOfGravity :estimatedWeight :estimatedWeightTolerance :momentOfInertia :surfaceArea :volume :weightedWeight :weightedWeightTolerance ) .
+   samm:properties ( :reference2DCADDrawing :reference3DCADDrawing :calculatedWeight :calculatedWeightTolerance :centerOfGravity :estimatedWeight :estimatedWeightTolerance :momentOfInertia :surfaceArea :volume :weightedWeight :weightedWeightTolerance ) .
 
 :density a samm:Property ;
    samm:preferredName "Density"@en ;
@@ -426,17 +426,6 @@
    samm:see <https://github.com/admin-shell-io/submodel-templates/tree/main/published/Provision%20of%203D%20Models/1/0> ;  
    samm:characteristic :Reference3DCADDrawingCharacteristic ;
    samm:exampleValue "urn:samm:io.catenax.3dm:a2f115cd-b9dd-4c5d-94c1-52fdf5b99a88"^^xsd:anyURI .
-
-:boundingBox a samm:Property ;
-   samm:preferredName "Bounding Box"@en ;
-   samm:description "The minimal 3D box that fully encloses the part geometry (length x width x height), units in millimetre."@en ;
-   samm:characteristic :BoundingBoxCharacteristic .
-
-:boundingSphere a samm:Property ;
-   samm:preferredName "Bounding Sphere"@en ;
-   samm:description "Diameter of the smallest possible sphere that fully encloses the part geometry. { \"value\": 315.0, \"unit\": \"mm\" }"@en ;
-   samm:characteristic :BoundingSphereCharacteristic ;
-   samm:exampleValue "315.0"^^xsd:float .
 
 :calculatedWeight a samm:Property ;
    samm:preferredName "Calculated Weight"@en ;
@@ -524,22 +513,6 @@
    samm:see <https://github.com/admin-shell-io/submodel-templates/tree/main/published/Provision%20of%203D%20Models/1/0> ;
    samm:dataType xsd:anyURI .
 
-:BoundingBoxCharacteristic a samm:Characteristic ;
-   samm:preferredName "Bounding Box Characteristic"@en ;
-   samm:description "The minimal 3D box that fully encloses the part geometry (length x width x height), units in millimetre."@en ;
-   samm:dataType :BoundingBoxEntity .
-
-:BoundingBoxEntity a samm:Entity ;
-   samm:preferredName "Bounding Box Entity"@en ;
-   samm:description "Entity for valuues of the 3D box that fully encloses the part geometry (length x width x height), units in millimetre"@en ;
-   samm:properties ( :boundingBoxPropertyLenght :boundingBoxPropertyWidth :boundingBoxPropertyHeight ) .
-
-:BoundingSphereCharacteristic a samm-c:Measurement ;
-   samm:preferredName "Bounding Sphere Characteristic"@en ;
-   samm:description "Diameter of the smallest possible sphere that fully encloses the part geometry. { \"value\": 315.0, \"unit\": \"mm\" }"@en ;
-   samm:dataType xsd:float ;
-   samm-c:unit samm-u:millimetre .
-
 :CalculatedWeightCharacteristic a samm-c:Measurement ;
    samm:preferredName "Calculated Weight Characteristic"@en ;
    samm:description "Mass of the part, typically in kilograms. Calculated out of all belonging 3D-models"@en ;
@@ -604,40 +577,4 @@
    samm-c:maxValue "+2147483647"^^xsd:float ;
    samm-c:lowerBoundDefinition samm-c:GREATER_THAN ;
    samm-c:upperBoundDefinition samm-c:LESS_THAN .
-
-:boundingBoxPropertyLenght a samm:Property ;
-   samm:preferredName "Bounding Box Property Lenght"@en ;
-   samm:description "The minimal 3D box that fully encloses the part geometry (length x width x height),  units in millimetre."@en ;
-   samm:characteristic :BoundingBoxLenght ;
-   samm:exampleValue "120.0"^^xsd:float .
-
-:boundingBoxPropertyWidth a samm:Property ;
-   samm:preferredName "Bounding Box Property Width"@en ;
-   samm:description "The minimal 3D box that fully encloses the part geometry (length x width x height),,  units in millimetre."@en ;
-   samm:characteristic :BoundingBoxWidth ;
-   samm:exampleValue "45.0"^^xsd:float .
-
-:boundingBoxPropertyHeight a samm:Property ;
-   samm:preferredName "Bounding Box Property Height"@en ;
-   samm:description "The minimal 3D box that fully encloses the part geometry (length x width x height),  units in millimetre."@en ;
-   samm:characteristic :BoundingBoxHeight ;
-   samm:exampleValue "30.0"^^xsd:float .
-
-:BoundingBoxLenght a samm-c:Measurement ;
-   samm:preferredName "Bounding Box Lenght"@en ;
-   samm:description "The minimal 3D box that fully encloses the part geometry (length x width x height),  units in millimetre."@en ;
-   samm:dataType xsd:float ;
-   samm-c:unit samm-u:millimetre .
-
-:BoundingBoxWidth a samm-c:Measurement ;
-   samm:preferredName "Bounding Box Width"@en ;
-   samm:description "The minimal 3D box that fully encloses the part geometry (length x width x height),  units in millimetre."@en ;
-   samm:dataType xsd:float ;
-   samm-c:unit samm-u:millimetre .
-
-:BoundingBoxHeight a samm-c:Measurement ;
-   samm:preferredName "Bounding Box Heigh "@en ;
-   samm:description "The minimal 3D box that fully encloses the part geometry (length x width x height),  units in millimetre."@en ;
-   samm:dataType xsd:float ;
-   samm-c:unit samm-u:millimetre .
 
