@@ -298,27 +298,38 @@
             </aas:property>
           </aas:value>
         </aas:submodelElementCollection>
-        <aas:submodelElementCollection>
-          <aas:idShort>boundingVolume</aas:idShort>
+        <aas:submodelElementList>
+          <aas:idShort>boundingVolumes</aas:idShort>
           <aas:displayName>
             <aas:langStringNameType>
               <aas:language>en</aas:language>
-              <aas:text>Bounding Volume</aas:text>
+              <aas:text>Bounding Volumes</aas:text>
             </aas:langStringNameType>
           </aas:displayName>
           <aas:description>
             <aas:langStringTextType>
               <aas:language>en</aas:language>
-              <aas:text>The bounding volume that encloses the geometry object or node.</aas:text>
+              <aas:text>The set of bounding volume representations that enclose the geometry object or node. Each entry can be a bounding box or a bounding sphere, and more than one representation can be given in parallel, e.g. one AABB and one OBB, disambiguated by each entry's boundingVolumeType.</aas:text>
             </aas:langStringTextType>
           </aas:description>
+          <aas:semanticId>
+            <aas:type>ExternalReference</aas:type>
+            <aas:keys>
+              <aas:key>
+                <aas:type>GlobalReference</aas:type>
+                <aas:value>urn:samm:io.catenax.single_level_scene_node:1.0.0#SetOfBoundingVolumesCharacteristic</aas:value>
+              </aas:key>
+            </aas:keys>
+          </aas:semanticId>
+          <aas:orderRelevant>false</aas:orderRelevant>
+          <aas:typeValueListElement>SubmodelElementCollection</aas:typeValueListElement>
           <aas:value>
             <aas:property>
-              <aas:idShort>minPoint</aas:idShort>
+              <aas:idShort>boundingVolumes</aas:idShort>
               <aas:displayName>
                 <aas:langStringNameType>
                   <aas:language>en</aas:language>
-                  <aas:text>Minimum Point</aas:text>
+                  <aas:text>Bounding Volumes</aas:text>
                 </aas:langStringNameType>
               </aas:displayName>
               <aas:semanticId>
@@ -326,33 +337,14 @@
                 <aas:keys>
                   <aas:key>
                     <aas:type>GlobalReference</aas:type>
-                    <aas:value>urn:samm:io.catenax.single_level_scene_node:1.0.0#minPoint</aas:value>
+                    <aas:value>urn:samm:io.catenax.single_level_scene_node:1.0.0#boundingVolumes</aas:value>
                   </aas:key>
                 </aas:keys>
               </aas:semanticId>
-              <aas:valueType>xs:float</aas:valueType>
-            </aas:property>
-            <aas:property>
-              <aas:idShort>maxPoint</aas:idShort>
-              <aas:displayName>
-                <aas:langStringNameType>
-                  <aas:language>en</aas:language>
-                  <aas:text>Maximum Point</aas:text>
-                </aas:langStringNameType>
-              </aas:displayName>
-              <aas:semanticId>
-                <aas:type>ExternalReference</aas:type>
-                <aas:keys>
-                  <aas:key>
-                    <aas:type>GlobalReference</aas:type>
-                    <aas:value>urn:samm:io.catenax.single_level_scene_node:1.0.0#maxPoint</aas:value>
-                  </aas:key>
-                </aas:keys>
-              </aas:semanticId>
-              <aas:valueType>xs:float</aas:valueType>
+              <aas:valueType>xs:string</aas:valueType>
             </aas:property>
           </aas:value>
-        </aas:submodelElementCollection>
+        </aas:submodelElementList>
         <aas:submodelElementList>
           <aas:idShort>modelItems</aas:idShort>
           <aas:displayName>
@@ -844,14 +836,14 @@
       </aas:embeddedDataSpecifications>
     </aas:conceptDescription>
     <aas:conceptDescription>
-      <aas:idShort>minPoint</aas:idShort>
+      <aas:idShort>boundingVolumes</aas:idShort>
       <aas:displayName>
         <aas:langStringNameType>
           <aas:language>en</aas:language>
-          <aas:text>Minimum Point</aas:text>
+          <aas:text>Bounding Volumes</aas:text>
         </aas:langStringNameType>
       </aas:displayName>
-      <aas:id>urn:samm:io.catenax.single_level_scene_node:1.0.0#minPoint</aas:id>
+      <aas:id>urn:samm:io.catenax.single_level_scene_node:1.0.0#boundingVolumes</aas:id>
       <aas:embeddedDataSpecifications>
         <aas:embeddedDataSpecification>
           <aas:dataSpecification>
@@ -868,112 +860,20 @@
               <aas:preferredName>
                 <aas:langStringPreferredNameTypeIec61360>
                   <aas:language>en</aas:language>
-                  <aas:text>Minimum Point</aas:text>
+                  <aas:text>Bounding Volumes</aas:text>
                 </aas:langStringPreferredNameTypeIec61360>
               </aas:preferredName>
               <aas:shortName>
                 <aas:langStringShortNameTypeIec61360>
                   <aas:language>en</aas:language>
-                  <aas:text>minPoint</aas:text>
-                </aas:langStringShortNameTypeIec61360>
-              </aas:shortName>
-              <aas:dataType>REAL_MEASURE</aas:dataType>
-              <aas:definition>
-                <aas:langStringDefinitionTypeIec61360>
-                  <aas:language>en</aas:language>
-                  <aas:text>The minimum corner point of the bounding box.</aas:text>
-                </aas:langStringDefinitionTypeIec61360>
-              </aas:definition>
-            </aas:dataSpecificationIec61360>
-          </aas:dataSpecificationContent>
-        </aas:embeddedDataSpecification>
-      </aas:embeddedDataSpecifications>
-    </aas:conceptDescription>
-    <aas:conceptDescription>
-      <aas:idShort>maxPoint</aas:idShort>
-      <aas:displayName>
-        <aas:langStringNameType>
-          <aas:language>en</aas:language>
-          <aas:text>Maximum Point</aas:text>
-        </aas:langStringNameType>
-      </aas:displayName>
-      <aas:id>urn:samm:io.catenax.single_level_scene_node:1.0.0#maxPoint</aas:id>
-      <aas:embeddedDataSpecifications>
-        <aas:embeddedDataSpecification>
-          <aas:dataSpecification>
-            <aas:type>ExternalReference</aas:type>
-            <aas:keys>
-              <aas:key>
-                <aas:type>GlobalReference</aas:type>
-                <aas:value>https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0</aas:value>
-              </aas:key>
-            </aas:keys>
-          </aas:dataSpecification>
-          <aas:dataSpecificationContent>
-            <aas:dataSpecificationIec61360>
-              <aas:preferredName>
-                <aas:langStringPreferredNameTypeIec61360>
-                  <aas:language>en</aas:language>
-                  <aas:text>Maximum Point</aas:text>
-                </aas:langStringPreferredNameTypeIec61360>
-              </aas:preferredName>
-              <aas:shortName>
-                <aas:langStringShortNameTypeIec61360>
-                  <aas:language>en</aas:language>
-                  <aas:text>maxPoint</aas:text>
-                </aas:langStringShortNameTypeIec61360>
-              </aas:shortName>
-              <aas:dataType>REAL_MEASURE</aas:dataType>
-              <aas:definition>
-                <aas:langStringDefinitionTypeIec61360>
-                  <aas:language>en</aas:language>
-                  <aas:text>The maximum corner point of the bounding box.</aas:text>
-                </aas:langStringDefinitionTypeIec61360>
-              </aas:definition>
-            </aas:dataSpecificationIec61360>
-          </aas:dataSpecificationContent>
-        </aas:embeddedDataSpecification>
-      </aas:embeddedDataSpecifications>
-    </aas:conceptDescription>
-    <aas:conceptDescription>
-      <aas:idShort>boundingVolume</aas:idShort>
-      <aas:displayName>
-        <aas:langStringNameType>
-          <aas:language>en</aas:language>
-          <aas:text>Bounding Volume</aas:text>
-        </aas:langStringNameType>
-      </aas:displayName>
-      <aas:id>urn:samm:io.catenax.single_level_scene_node:1.0.0#boundingVolume</aas:id>
-      <aas:embeddedDataSpecifications>
-        <aas:embeddedDataSpecification>
-          <aas:dataSpecification>
-            <aas:type>ExternalReference</aas:type>
-            <aas:keys>
-              <aas:key>
-                <aas:type>GlobalReference</aas:type>
-                <aas:value>https://admin-shell.io/DataSpecificationTemplates/DataSpecificationIec61360/3/0</aas:value>
-              </aas:key>
-            </aas:keys>
-          </aas:dataSpecification>
-          <aas:dataSpecificationContent>
-            <aas:dataSpecificationIec61360>
-              <aas:preferredName>
-                <aas:langStringPreferredNameTypeIec61360>
-                  <aas:language>en</aas:language>
-                  <aas:text>Bounding Volume</aas:text>
-                </aas:langStringPreferredNameTypeIec61360>
-              </aas:preferredName>
-              <aas:shortName>
-                <aas:langStringShortNameTypeIec61360>
-                  <aas:language>en</aas:language>
-                  <aas:text>boundingVolume</aas:text>
+                  <aas:text>boundingVolumes</aas:text>
                 </aas:langStringShortNameTypeIec61360>
               </aas:shortName>
               <aas:dataType>STRING</aas:dataType>
               <aas:definition>
                 <aas:langStringDefinitionTypeIec61360>
                   <aas:language>en</aas:language>
-                  <aas:text>The bounding volume that encloses the geometry object or node.</aas:text>
+                  <aas:text>The set of bounding volume representations that enclose the geometry object or node. Each entry can be a bounding box or a bounding sphere, and more than one representation can be given in parallel, e.g. one AABB and one OBB, disambiguated by each entry's boundingVolumeType.</aas:text>
                 </aas:langStringDefinitionTypeIec61360>
               </aas:definition>
             </aas:dataSpecificationIec61360>

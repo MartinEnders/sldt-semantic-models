@@ -91,6 +91,32 @@
         },
         "uniqueItems" : true
       },
+      "BoundingVolumeType" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#BoundingVolumeType",
+        "description" : "Defines how a bounding volume was derived: AABB (axis-aligned bounding box, relative to the node's own coordinate system) or OBB (oriented bounding box, fitted to the geometry).",
+        "enum" : [ "AABB", "OBB" ]
+      },
+      "DiameterCharacteristic" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#DiameterCharacteristic",
+        "description" : "Diameter of a bounding sphere in millimetre."
+      },
+      "BoundingSphere" : {
+        "description" : "A bounding sphere representation enclosing a geometry object or node, expressed via its diameter. Its center is the origin of its own frame (its referenceCoordinateSystem if present, otherwise the node's localTransform).",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#BoundingSphere",
+        "type" : "object",
+        "properties" : {
+          "diameter" : {
+            "description" : "Diameter of the bounding sphere, centered on the sphere's own frame (see referenceCoordinateSystem on the enclosing bounding volume).",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#diameter",
+            "$ref" : "#/components/schemas/DiameterCharacteristic"
+          }
+        },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/BoundingVolumeAbstractEntity"
+        } ]
+      },
       "Vector3Trait" : {
         "description" : "Requires the vector to have exactly 3 elements.",
         "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#Vector3Trait",
@@ -103,23 +129,82 @@
         "maxItems" : 3,
         "minItems" : 3
       },
-      "BoundingVolumeCharacteristic" : {
-        "description" : "Characteristic describing the bounding volume of a node.",
-        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#BoundingVolumeCharacteristic",
+      "BoundingBoxLengthCharacteristic" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#BoundingBoxLengthCharacteristic",
+        "description" : "Bounding box length in millimetre."
+      },
+      "BoundingBoxWidthCharacteristic" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#BoundingBoxWidthCharacteristic",
+        "description" : "Bounding box width in millimetre."
+      },
+      "BoundingBoxHeightCharacteristic" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#BoundingBoxHeightCharacteristic",
+        "description" : "Bounding box height in millimetre."
+      },
+      "BoundingBox" : {
+        "description" : "A bounding box representation enclosing a geometry object or node. It can be expressed via corner points, via dimensions (length, width, height), or both; all are always given in the box's own frame (its referenceCoordinateSystem if present, otherwise the node's localTransform), so they never need to account for rotation themselves.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#BoundingBox",
         "type" : "object",
         "properties" : {
           "minPoint" : {
-            "description" : "The minimum corner point of the bounding box.",
+            "description" : "The minimum corner point of the bounding box, in the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume).",
             "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#minPoint",
             "$ref" : "#/components/schemas/Vector3Trait"
           },
           "maxPoint" : {
-            "description" : "The maximum corner point of the bounding box.",
+            "description" : "The maximum corner point of the bounding box, in the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume).",
             "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#maxPoint",
             "$ref" : "#/components/schemas/Vector3Trait"
+          },
+          "length" : {
+            "description" : "Bounding box length in millimetre, along the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume) — independent of any rotation, so it can be read directly without recalculation.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#length",
+            "$ref" : "#/components/schemas/BoundingBoxLengthCharacteristic"
+          },
+          "width" : {
+            "description" : "Bounding box width in millimetre, along the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume) — independent of any rotation, so it can be read directly without recalculation.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#width",
+            "$ref" : "#/components/schemas/BoundingBoxWidthCharacteristic"
+          },
+          "height" : {
+            "description" : "Bounding box height in millimetre, along the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume) — independent of any rotation, so it can be read directly without recalculation.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#height",
+            "$ref" : "#/components/schemas/BoundingBoxHeightCharacteristic"
           }
         },
-        "required" : [ "minPoint", "maxPoint" ]
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/BoundingVolumeAbstractEntity"
+        } ]
+      },
+      "BoundingVolumeAbstractEntity" : {
+        "description" : "Common properties shared by any bounding volume representation enclosing a geometry object or node, regardless of shape. If referenceCoordinateSystem is absent, the volume is expressed in the node's own localTransform frame (AABB); if present, referenceCoordinateSystem gives the volume's own origin and orientation (OBB).",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#BoundingVolumeAbstractEntity",
+        "type" : "object",
+        "properties" : {
+          "boundingVolumeType" : {
+            "description" : "Identifies how this bounding volume was derived: AABB (axis-aligned to the node's own coordinate system) or OBB (oriented, fitted to the geometry, with its own origin and orientation given by referenceCoordinateSystem).",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#boundingVolumeType",
+            "$ref" : "#/components/schemas/BoundingVolumeType"
+          },
+          "referenceCoordinateSystem" : {
+            "description" : "The coordinate system this bounding volume's own frame is placed in, when it is an OBB and therefore differs from the node's localTransform. Uses the same matrix representation as localTransform, so it can be read the same way. Absent for an AABB, where the node's localTransform applies directly.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#referenceCoordinateSystem",
+            "$ref" : "#/components/schemas/LocalTransformCharacteristic"
+          }
+        },
+        "required" : [ "boundingVolumeType" ]
+      },
+      "SetOfBoundingVolumesCharacteristic" : {
+        "description" : "Set of bounding volume representations describing a node (bounding boxes and/or bounding spheres), allowing more than one representation to be given at once, each disambiguated by its boundingVolumeType.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#SetOfBoundingVolumesCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/BoundingVolumeAbstractEntity"
+        },
+        "uniqueItems" : true
       },
       "ExternalBinaryModelData" : {
         "description" : "Links to io.catenax.binary_exchange",
@@ -171,10 +256,10 @@
       "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#localTransform",
       "$ref" : "#/components/schemas/LocalTransformCharacteristic"
     },
-    "boundingVolume" : {
-      "description" : "The bounding volume that encloses the geometry object or node.",
-      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#boundingVolume",
-      "$ref" : "#/components/schemas/BoundingVolumeCharacteristic"
+    "boundingVolumes" : {
+      "description" : "The set of bounding volume representations that enclose the geometry object or node. Each entry can be a bounding box or a bounding sphere, and more than one representation can be given in parallel, e.g. one AABB and one OBB, disambiguated by each entry's boundingVolumeType.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.single_level_scene_node:1.0.0#boundingVolumes",
+      "$ref" : "#/components/schemas/SetOfBoundingVolumesCharacteristic"
     },
     "modelItems" : {
       "description" : "The set of geometry model items associated with this node.",

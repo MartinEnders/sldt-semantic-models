@@ -35,7 +35,7 @@
 :SingleLevelSceneNode a samm:Aspect;
    samm:preferredName "Single Level Scene Node"@en;
    samm:description "The Single Level Scene Node for geometry Data "@en;
-   samm:properties ( :catenaXId [ samm:property :childItems; samm:optional true ] [ samm:property :localTransform; samm:optional true ] [ samm:property :boundingVolume; samm:optional true ] [ samm:property :modelItems; samm:optional true ] );
+   samm:properties ( :catenaXId [ samm:property :childItems; samm:optional true ] [ samm:property :localTransform; samm:optional true ] [ samm:property :boundingVolumes; samm:optional true ] [ samm:property :modelItems; samm:optional true ] );
    samm:operations ( );
    samm:events ( ).
 
@@ -55,10 +55,10 @@
    samm:description "The local transformation (position, rotation, scale) of the node relative to its parent."@en;
    samm:characteristic :LocalTransformCharacteristic.
 
-:boundingVolume a samm:Property;
-   samm:preferredName "Bounding Volume"@en;
-   samm:description "The bounding volume that encloses the geometry object or node."@en;
-   samm:characteristic :BoundingVolumeCharacteristic.
+:boundingVolumes a samm:Property;
+   samm:preferredName "Bounding Volumes"@en;
+   samm:description "The set of bounding volume representations that enclose the geometry object or node. Each entry can be a bounding box or a bounding sphere, and more than one representation can be given in parallel, e.g. one axis-aligned bounding box (AABB) and one oriented bounding box (OBB), disambiguated by each entry's boundingVolumeType."@en;
+   samm:characteristic :SetOfBoundingVolumesCharacteristic.
 
 :modelItems a samm:Property;
    samm:preferredName "Model Items"@en;
@@ -75,10 +75,10 @@
    samm:description "Characteristic describing the local transformation of a node."@en;
    samm:dataType :MatrixTransform.
 
-:BoundingVolumeCharacteristic a samm:Characteristic;
-   samm:preferredName "Bounding Volume Characteristic"@en;
-   samm:description "Characteristic describing the bounding volume of a node."@en;
-   samm:dataType :BoundingBox.
+:SetOfBoundingVolumesCharacteristic a samm-c:Set;
+   samm:preferredName "Set of Bounding Volumes"@en;
+   samm:description "Set of bounding volume representations describing a node (bounding boxes and/or bounding spheres), allowing more than one representation to be given at once, each disambiguated by its boundingVolumeType."@en;
+   samm:dataType :BoundingVolumeAbstractEntity.
 
 :SetOfModelItemsCharacteristic a samm-c:Set;
    samm:preferredName "Set of Model Items"@en;
@@ -95,10 +95,22 @@
    samm:description "Describes a transformation matrix"@en;
    samm:properties ( :matrix4x4 ).
 
+:BoundingVolumeAbstractEntity a samm:AbstractEntity;
+   samm:preferredName "Bounding Volume"@en;
+   samm:description "Common properties shared by any bounding volume representation enclosing a geometry object or node, regardless of shape. If referenceCoordinateSystem is absent, the volume is expressed in the node's own localTransform frame, i.e. an axis-aligned bounding box (AABB); if present, referenceCoordinateSystem gives the volume's own origin and orientation, i.e. an oriented bounding box (OBB)."@en;
+   samm:properties ( :boundingVolumeType [ samm:property :referenceCoordinateSystem; samm:optional true ] ).
+
 :BoundingBox a samm:Entity;
+   samm:extends :BoundingVolumeAbstractEntity;
    samm:preferredName "Bounding Box"@en;
-   samm:description "Axis-aligned bounding box enclosing a geometry object or node."@en;
-   samm:properties ( :minPoint :maxPoint ).
+   samm:description "A bounding box representation enclosing a geometry object or node. It can be expressed via corner points, via dimensions (length, width, height), or both; all are always given in the box's own frame (its referenceCoordinateSystem if present, otherwise the node's localTransform), so they never need to account for rotation themselves."@en;
+   samm:properties ( [ samm:property :minPoint; samm:optional true ] [ samm:property :maxPoint; samm:optional true ] [ samm:property :length; samm:optional true ] [ samm:property :width; samm:optional true ] [ samm:property :height; samm:optional true ] ).
+
+:BoundingSphere a samm:Entity;
+   samm:extends :BoundingVolumeAbstractEntity;
+   samm:preferredName "Bounding Sphere"@en;
+   samm:description "A bounding sphere representation enclosing a geometry object or node, expressed via its diameter. Its center is the origin of its own frame (its referenceCoordinateSystem if present, otherwise the node's localTransform)."@en;
+   samm:properties ( [ samm:property :diameter; samm:optional true ] ).
 
 :ExternalBinaryModelData a samm:Entity;
    samm:preferredName "External Binary Model Data"@en;
@@ -125,15 +137,50 @@
 
 :minPoint a samm:Property;
    samm:preferredName "Minimum Point"@en;
-   samm:description "The minimum corner point of the bounding box."@en;
+   samm:description "The minimum corner point of the bounding box, in the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume)."@en;
    samm:characteristic :Vector3Trait;
    samm:exampleValue "[-1.0, -1.0, -1.0]".
 
 :maxPoint a samm:Property;
    samm:preferredName "Maximum Point"@en;
-   samm:description "The maximum corner point of the bounding box."@en;
+   samm:description "The maximum corner point of the bounding box, in the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume)."@en;
    samm:characteristic :Vector3Trait;
    samm:exampleValue "[1.0, 1.0, 1.0]".
+
+:boundingVolumeType a samm:Property;
+   samm:preferredName "Bounding Volume Type"@en;
+   samm:description "Identifies how this bounding volume was derived: an axis-aligned bounding box (AABB), aligned to the node's own coordinate system, or an oriented bounding box (OBB), fitted to the geometry with its own origin and orientation given by referenceCoordinateSystem."@en;
+   samm:characteristic :BoundingVolumeType;
+   samm:exampleValue "AABB".
+
+:referenceCoordinateSystem a samm:Property;
+   samm:preferredName "Reference Coordinate System"@en;
+   samm:description "The coordinate system this bounding volume's own frame is placed in, when it is an oriented bounding box (OBB) and therefore differs from the node's localTransform. Uses the same matrix representation as localTransform, so it can be read the same way. Absent for an axis-aligned bounding box (AABB), where the node's localTransform applies directly."@en;
+   samm:characteristic :LocalTransformCharacteristic.
+
+:length a samm:Property;
+   samm:preferredName "Length"@en;
+   samm:description "Bounding box length in millimetre, along the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume) — independent of any rotation, so it can be read directly without recalculation."@en;
+   samm:characteristic :BoundingBoxLengthCharacteristic;
+   samm:exampleValue "120.0"^^xsd:float.
+
+:width a samm:Property;
+   samm:preferredName "Width"@en;
+   samm:description "Bounding box width in millimetre, along the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume) — independent of any rotation, so it can be read directly without recalculation."@en;
+   samm:characteristic :BoundingBoxWidthCharacteristic;
+   samm:exampleValue "45.0"^^xsd:float.
+
+:height a samm:Property;
+   samm:preferredName "Height"@en;
+   samm:description "Bounding box height in millimetre, along the box's own frame (see boundingVolumeType and referenceCoordinateSystem on the enclosing bounding volume) — independent of any rotation, so it can be read directly without recalculation."@en;
+   samm:characteristic :BoundingBoxHeightCharacteristic;
+   samm:exampleValue "30.0"^^xsd:float.
+
+:diameter a samm:Property;
+   samm:preferredName "Diameter"@en;
+   samm:description "Diameter of the bounding sphere, centered on the sphere's own frame (see referenceCoordinateSystem on the enclosing bounding volume)."@en;
+   samm:characteristic :DiameterCharacteristic;
+   samm:exampleValue "315.0"^^xsd:float.
 
 :SetOfSemanticTagsCharacteristic a samm-c:Set;
    samm:preferredName "Semantic Tags Characteristic"@en;
@@ -181,4 +228,34 @@
    samm:preferredName "Float Characteristic"@en;
    samm:description "Characteristic for a float value."@en;
    samm:dataType xsd:float.
+
+:BoundingVolumeType a samm-c:Enumeration;
+   samm:preferredName "Bounding Volume Type"@en;
+   samm:description "Defines how a bounding volume was derived: AABB (axis-aligned bounding box, relative to the node's own coordinate system) or OBB (oriented bounding box, fitted to the geometry)."@en;
+   samm:dataType xsd:string;
+   samm-c:values ( "AABB" "OBB" ).
+
+:BoundingBoxLengthCharacteristic a samm-c:Measurement;
+   samm:preferredName "Bounding Box Length Characteristic"@en;
+   samm:description "Bounding box length in millimetre."@en;
+   samm:dataType xsd:float;
+   samm-c:unit unit:millimetre.
+
+:BoundingBoxWidthCharacteristic a samm-c:Measurement;
+   samm:preferredName "Bounding Box Width Characteristic"@en;
+   samm:description "Bounding box width in millimetre."@en;
+   samm:dataType xsd:float;
+   samm-c:unit unit:millimetre.
+
+:BoundingBoxHeightCharacteristic a samm-c:Measurement;
+   samm:preferredName "Bounding Box Height Characteristic"@en;
+   samm:description "Bounding box height in millimetre."@en;
+   samm:dataType xsd:float;
+   samm-c:unit unit:millimetre.
+
+:DiameterCharacteristic a samm-c:Measurement;
+   samm:preferredName "Diameter Characteristic"@en;
+   samm:description "Diameter of a bounding sphere in millimetre."@en;
+   samm:dataType xsd:float;
+   samm-c:unit unit:millimetre.
 
